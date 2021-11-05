@@ -3,9 +3,6 @@
 
 " Here is the comment syntax for most languages: https://rosettacode.org/wiki/Comments#Go
 
-" Source comment vars from other file
-source ~\vimfiles\plugin\set-comment-strings.vim
-
 if has_key(g:comments, &filetype) == 1
     let g:comment_start = g:comments[&filetype].start
     let g:comment_end = g:comments[&filetype].end
