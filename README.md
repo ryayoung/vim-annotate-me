@@ -12,8 +12,8 @@ If you just want to get this plugin working and don't feel like reading, paste t
 ```vim
 let g:my_name = "Your Name"
 nnoremap <Leader>4 :call CreateHeader()<CR>
-nnoremap<C-c> :call ToggleComment()<CR>
-vnoremap<C-c> :call ToggleComment()<CR>gv
+nnoremap <C-c> :call ToggleComment()<CR>
+vnoremap <C-c> :call ToggleComment()<CR>gv
 ```
 #### Headers:
 1. First, declare your name in your vimrc: ```let g:my_name = "Your Name"```. This will be used in the headers.
