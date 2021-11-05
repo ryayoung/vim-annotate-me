@@ -1,7 +1,7 @@
 # vim-comments-and-headers
 
 ### This plugin does the following:
-1. It lets you comment/uncomment one or multiple lines at a time with a shortcut of your choice. It recognizes your filetype and will comment/uncomment according to that syntax. This is especially useful in languages such as HTML, where comments must be closed at the end of the line (Ex: ```<!-- my text -->```).
+1. It lets you comment/uncomment one or multiple lines at a time with a shortcut of your choice. It recognizes your filetype and will comment/uncomment according to that syntax. This is especially useful in languages such as HTML, where comments must be closed at the end of the line (Ex: ```<!-- some html stuff -->```).
 2. It automatically creates headers (name & today's date) at the top of any new document you create, or any empty document that you open, and comments out that header using correct syntax based on your filetype. Additionally, you can map a shortcut to add a header to an existing file that doesn't already have one.
 3. As soon as you write/save a file that HAS been modified, the header (if one exists) will be updated with the current date.
 
