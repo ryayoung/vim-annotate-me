@@ -19,3 +19,15 @@ Insert ```Plug 'ryayoung/vim-comments-and-headers'``` in the plugin section of y
 ## CUSTOMIZE
 - If you don't want headers to auto-insert in new or empty files, add this line to your vimrc: ```let g:auto_smart_header = 0```.
 
+## DEMONSTRATION
+Inside vim, type ```:new example.html``` and a new window window will open with the first 2 lines filled with a header:
+```html
+<!-- Maintainer:     Ryan Young -->
+<!-- Last Modified:  11-05-21 -->
+```
+Type ```:new example.py``` and a new window will open and be filled with the following:
+```python
+# Maintainer:     Ryan Young
+# Last Modified:  11-05-21
+```
+
