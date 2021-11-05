@@ -35,34 +35,33 @@ let g:comments = {
 
 
 " SYNTAX LIST NOTES: (file extension, filetype, comment syntax)
-" vim   vim         "
-" vb    vb          '
-" inc   pascal      (* *)
-" xhtml xhtml       
-" html  html        <!-- -->
-" xml   xml         <!-- -->
-" css   css         /* */
-" c     c           /* */
-" ts    typescript  /* */
-" py    python      #
-" rb    ruby        #
-" pl    perl        #
-" ps1   ps1         #
-" cs    cs          //
-" go    go          //
-" swift swift       //
-" cpp   cpp         //
-" php   php         //
-" js    javascript  //
-" java  java        //
-" rs    rust        //
-" scala scala       //
-" kt    kotlin      //
-" sql   sql         --
-" hs    haskell     --
-" lua   lua         --
-" ada   ada         --
-" m     matlab      %
-" txt   text        none
-" md    markdown    none
-
+" vim       vim             "
+" vb        vb              '
+" inc       pascal          (* *)
+" xhtml     xhtml           <!-- -->
+" html      html            <!-- -->
+" xml       xml             <!-- -->
+" css       css             /* */
+" c         c               /* */
+" ts        typescript      /* */
+" py        python          #
+" rb        ruby            #
+" pl        perl            #
+" ps1       ps1             #
+" cs        cs              //
+" go        go              //
+" swift     swift           //
+" cpp       cpp             //
+" php       php             //
+" js        javascript      //
+" java      java            //
+" rs        rust            //
+" scala     scala           //
+" kt        kotlin          //
+" sql       sql             --
+" hs        haskell         --
+" lua       lua             --
+" ada       ada             --
+" m         matlab          %
+" txt       text            none
+" md        markdown        none
