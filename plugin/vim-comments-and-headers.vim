@@ -1,11 +1,12 @@
 " Maintainer:     Ryan Young
 " Last Modified:  Nov 05, 2021
 
-let g:my_name = get(g:, 'my_name', '<Name goes here> (declare "g:my_name =" in vimrc)') "sets name variable if not already declared in vimrc
+" These 'get(g:' commands will set variables to a default unless they are already declared
+let g:my_name = get(g:, 'my_name', '<Name goes here> (declare "g:my_name =" in vimrc)')
 let g:headerstr_name = get(g:, 'headerstr_name', 'Maintainer:     ' . g:my_name)
 let g:headerstr_time = get(g:, 'headerstr_time', 'Last Modified:  ')
 let g:time_fmt = get(g:, 'time_fmt', '%b %d, %Y')
-let g:cur_time = strftime(g:time_fmt)
+let g:cur_time = strftime(g:time_fmt) "sets
 
 let g:comment_start = get(g:, 'comment_start', '')
 let g:comment_end = get(g:, 'comment_end', '')
