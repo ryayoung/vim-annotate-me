@@ -11,10 +11,14 @@ Insert ```Plug 'ryayoung/vim-comments-and-headers'``` in the plugin section of y
 If you just want to get this plugin working and don't feel like reading, paste the following into your ```vimrc``` file:
 ```vim
 let g:my_name = "Your Name"
+" Shortcut to create header in file that doesn't have one
 nnoremap <Leader>4 :call CreateHeader()<CR>
+" Toggle comment/uncomment current line
 nnoremap <C-c> :call ToggleComment()<CR>
+" Toggle comment/uncomment one or multiple selected lines
 vnoremap <C-c> :call ToggleComment()<CR>gv
 ```
+Otherwise, here's an explanation:
 #### Headers:
 1. First, declare your name in your vimrc: ```let g:my_name = "Your Name"```. This will be used in the headers.
 2. Create a normal mode map that calls CreateHeader(). Use this to add a header to an existing file that doesn't already have one.
