@@ -1,5 +1,9 @@
 " Maintainer:     Ryan Young
 " Last Modified:  11-04-21
+
+" Here is the comment syntax for most languages: https://rosettacode.org/wiki/Comments#Go
+" Add more to this list if you're using a language not listed here
+
 let g:comments = {
     \ 'vb':         {'start': "'", 'end': ''},
     \ 'vim':        {'start': '"', 'end': ''},
