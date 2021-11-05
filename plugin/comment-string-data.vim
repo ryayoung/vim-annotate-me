@@ -5,67 +5,54 @@
 " Add more to this list if you're using a language not listed here
 
 let g:comments = {
-    \ 'vb':         {'start': "'", 'end': ''},
-    \ 'vim':        {'start': '"', 'end': ''},
-    \ 'pascal':     {'start': '(*', 'end': '*)'},
-    \ 'xhtml':      {'start': '<!--', 'end': '-->'},
-    \ 'html':       {'start': '<!--', 'end': '-->'},
-    \ 'xml':        {'start': '<!--', 'end': '-->'},
-    \ 'css':        {'start': '/*', 'end': '*/'},
-    \ 'c':          {'start': '/*', 'end': '*/'},
-    \ 'typescript': {'start': '/*', 'end': '*/'},
-    \ 'python':     {'start': '#', 'end': ''},
-    \ 'ruby':       {'start': '#', 'end': ''},
-    \ 'perl':       {'start': '#', 'end': ''},
-    \ 'ps1':        {'start': '#', 'end': ''},
-    \ 'cs':         {'start': '//', 'end': ''},
-    \ 'go':         {'start': '//', 'end': ''},
-    \ 'swift':      {'start': '//', 'end': ''},
-    \ 'cpp':        {'start': '//', 'end': ''},
-    \ 'php':        {'start': '//', 'end': ''},
-    \ 'javascript': {'start': '//', 'end': ''},
-    \ 'java':       {'start': '//', 'end': ''},
-    \ 'rust':       {'start': '//', 'end': ''},
-    \ 'scala':      {'start': '//', 'end': ''},
-    \ 'kotlin':     {'start': '//', 'end': ''},
-    \ 'sql':        {'start': '--', 'end': ''},
-    \ 'haskell':    {'start': '--', 'end': ''},
-    \ 'lua':        {'start': '--', 'end': ''},
-    \ 'ada':        {'start': '--', 'end': ''},
-    \ 'matlab':     {'start': '%', 'end': ''},
-    \ 'help':       {'start': '', 'end': ''},
-    \ '':           {'start': '', 'end': ''}
+    \ 'vb':         {'start': "'",      'end': ''},
+    \ 'vim':        {'start': '"',      'end': ''},
+    \ 'abap':       {'start': '"',      'end': ''},
+    \ 'pascal':     {'start': '(*',     'end': '*)'},
+    \ 'ocaml':      {'start': '(**',    'end': '*)'},
+    \ 'xquery':     {'start': '(:',     'end': ':)'},
+    \ 'xhtml':      {'start': '<!--',   'end': '-->'},
+    \ 'html':       {'start': '<!--',   'end': '-->'},
+    \ 'xml':        {'start': '<!--',   'end': '-->'},
+    \ 'ps1xml':     {'start': '<!--',   'end': '-->'},
+    \ 'css':        {'start': '/*',     'end': '*/'},
+    \ 'c':          {'start': '/*',     'end': '*/'},
+    \ 'typescript': {'start': '/*',     'end': '*/'},
+    \ 'sas':        {'start': '/*',     'end': '*/'},
+    \ 'python':     {'start': '#',      'end': ''},
+    \ 'ruby':       {'start': '#',      'end': ''},
+    \ 'perl':       {'start': '#',      'end': ''},
+    \ 'tcl':        {'start': '#',      'end': ''},
+    \ 'expect':     {'start': '#',      'end': ''},
+    \ 'cs':         {'start': '//',     'end': ''},
+    \ 'go':         {'start': '//',     'end': ''},
+    \ 'swift':      {'start': '//',     'end': ''},
+    \ 'cpp':        {'start': '//',     'end': ''},
+    \ 'php':        {'start': '//',     'end': ''},
+    \ 'javascript': {'start': '//',     'end': ''},
+    \ 'java':       {'start': '//',     'end': ''},
+    \ 'rust':       {'start': '//',     'end': ''},
+    \ 'scala':      {'start': '//',     'end': ''},
+    \ 'kotlin':     {'start': '//',     'end': ''},
+    \ 'groovy':     {'start': '//',     'end': ''},
+    \ 'dart':       {'start': '//',     'end': ''},
+    \ 'scilab':     {'start': '//',     'end': ''},
+    \ 'sql':        {'start': '--',     'end': ''},
+    \ 'haskell':    {'start': '--',     'end': ''},
+    \ 'lua':        {'start': '--',     'end': ''},
+    \ 'ada':        {'start': '--',     'end': ''},
+    \ 'vhdl':       {'start': '--',     'end': ''},
+    \ 'sather':     {'start': '--',     'end': ''},
+    \ 'matlab':     {'start': '%',      'end': ''},
+    \ 'prolog':     {'start': '%',      'end': ''},
+    \ 'cobol':      {'start': '      *','end': ''},
+    \ 'fortran':    {'start': '!',      'end': ''},
+    \ 'asm':        {'start': ';',      'end': ''},
+    \ 'scheme':     {'start': ';',      'end': ''},
+    \ 'clojure':    {'start': ';;',     'end': ''},
+    \ 'lisp':       {'start': ';;;',    'end': ''},
+    \ 'simula':     {'start': 'COMMENT','end': ';'},
+    \ 'tpp':        {'start': '--##',   'end': ''},
+    \ 'help':       {'start': '',       'end': ''},
+    \ '':           {'start': '',       'end': ''}
     \ }
-
-
-" SYNTAX LIST NOTES: (file extension, filetype, comment syntax)
-" vim       vim             "
-" vb        vb              '
-" inc       pascal          (* *)
-" xhtml     xhtml           <!-- -->
-" html      html            <!-- -->
-" xml       xml             <!-- -->
-" css       css             /* */
-" c         c               /* */
-" ts        typescript      /* */
-" py        python          #
-" rb        ruby            #
-" pl        perl            #
-" ps1       ps1             #
-" cs        cs              //
-" go        go              //
-" swift     swift           //
-" cpp       cpp             //
-" php       php             //
-" js        javascript      //
-" java      java            //
-" rs        rust            //
-" scala     scala           //
-" kt        kotlin          //
-" sql       sql             --
-" hs        haskell         --
-" lua       lua             --
-" ada       ada             --
-" m         matlab          %
-" txt       text            none
-" md        markdown        none
