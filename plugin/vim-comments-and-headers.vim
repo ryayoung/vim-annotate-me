@@ -1,7 +1,16 @@
 " Maintainer:     Ryan Young
-" Last Modified:  11-04-21
+" Last Modified:  Nov 05, 2021
 
-" Here is the comment syntax for most languages: https://rosettacode.org/wiki/Comments#Go
+let g:my_name = get(g:, 'my_name', '<Name goes here> (declare "g:my_name =" in vimrc)') "sets name variable if not already declared in vimrc
+let g:headerstr_name = get(g:, 'headerstr_name', 'Maintainer:     ' . g:my_name)
+let g:headerstr_time = get(g:, 'headerstr_time', 'Last Modified:  ')
+let g:time_fmt = get(g:, 'time_fmt', '%b %d, %Y')
+let g:cur_time = strftime(g:time_fmt)
+
+let g:comment_start = get(g:, 'comment_start', '')
+let g:comment_end = get(g:, 'comment_end', '')
+let g:comment_start_esc = get(g:, 'comment_start_esc', '')
+let g:comment_end_esc = get(g:, 'comment_end_esc', '')
 
 if has_key(g:comments, &filetype) == 1
     let g:comment_start = g:comments[&filetype].start
@@ -20,7 +29,7 @@ fun! SetCommentVars(filetype)
         let g:comment_end = ''
         let g:comment_start_esc = ''
         let g:comment_end_esc = ''
-        echom "NOTICE: Comment variable known for filetype " . &filetype
+        echom "NOTICE: Comment string unknown for " . &filetype " files. Go to /comment-string-data.vim"
     endif
 endfun
 
@@ -56,17 +65,20 @@ fun! CreateFirstHeader()
 endfun
 
 fun! CreateHeader()
-    let g:my_name = get(g:, 'my_name', '<Name goes here> (declare "g:my_name =" in vimrc)') "sets name variable if not already declared in vimrc
     let l:save_cursor = getcurpos()
-    let title1 = "Maintainer:     " . g:my_name
-    let title2 = "Last Modified:  "
-    let time = strftime("%m-%d-%y")
-    let end = ""
+    let l:end = ""
     if g:comment_end != ""
-        let end = " " . g:comment_end
+        let l:end = " " . g:comment_end
     endif
-    execute "normal! ggO" | execute "normal! cc" . g:comment_start . " " . title1 . end
-    execute "normal! o" | execute "normal! cc" . g:comment_start . " " . title2 . time . end
+    let l:space = " "
+    if g:comment_start == ""
+        let l:space = ""
+    endif
+    call setpos('.',[0,1,1,0])
+    exe "normal! O"
+    exe "normal! O"
+    call setline(1, g:comment_start . l:space . g:headerstr_name . l:end)
+    call setline(2, g:comment_start . l:space . g:headerstr_time . g:cur_time . l:end)
     call setpos('.', l:save_cursor)
 endfun
 
@@ -76,15 +88,13 @@ fun! UpdateLastModified()
         return
     endif
     let save_cursor = getcurpos()
-    let title = "Last Modified:  "
-    let time = strftime("%m-%d-%y")
     let end = ""
     if g:comment_end_esc != ""
         let end = " " . g:comment_end_esc
     endif
-    let line = search(g:comment_start . " " . title . "..-..-..", "w")
+    let line = search(g:comment_start . " " . g:headerstr_time, "w")
     if line != 0 
-        exe line . "g/" . title . "/s/.*/" . g:comment_start_esc . " " . title . time . end
+        exe line . "g/" . g:headerstr_time . "/s/.*/" . g:comment_start_esc . " " . g:headerstr_time . g:cur_time . end
     endif
 
     call setpos('.', save_cursor)
@@ -95,10 +105,13 @@ fun! ToggleComment()
         let l:line = getline('.')
         if l:line[0:len(g:comment_start)] == g:comment_start . ' '
             call RemoveComment(" ")
+            echo "COMMENT OFF"
         elseif l:line[0:len(g:comment_start)-1] == g:comment_start
             call RemoveComment("")
+            echo "COMMENT OFF"
         else
             call InsertComment()
+            echo "COMMENT ON"
         endif
     endif
 endfun
