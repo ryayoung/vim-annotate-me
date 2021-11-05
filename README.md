@@ -17,5 +17,5 @@ Insert ```Plug 'ryayoung/vim-comments-and-headers'``` in the plugin section of y
 - ```nnoremap<C-c> :call ToggleComment()<CR>```
 - ```vnoremap<C-c> :call ToggleComment()<CR>gv``` (Add "gv" to the end of any visual map to stay in visual mode after execution)
 ## CUSTOMIZE
-1. If you don't want headers to auto-insert in new or empty files, add this line to your vimrc: ```let g:auto_smart_header = 0```.
+- If you don't want headers to auto-insert in new or empty files, add this line to your vimrc: ```let g:auto_smart_header = 0```.
 
