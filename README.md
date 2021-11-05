@@ -30,6 +30,10 @@ Otherwise, here's an explanation:
 - NOTE: When you press your shortcut key, the plugin will detect whether the line is commented out, and add/remove the comment character(s) from the beginning of the line and the end of the line if necessary. If you're in visual mode and have multiple lines selected, this action will be repeated for each line INDIVIDUALLY, so comment syntax will be inserted for each line in your selection that's not yet commented out, and it will be removed for each line in your section that is already commented out.
 ## CUSTOMIZE
 - If you don't want headers to auto-insert in new or empty files, add this line to your vimrc: ```let g:auto_smart_header = 0```.
+- To change the string preceding your name in the header, declare in vimrc: ```let g:headerstr_name = "Maintainer:     "```
+- To change the string preceding the date in the header, declare: ```let g:headerstr_time = "Last Modified:  "```
+- To change the formatting of the date, declare: ```let g:time_fmt = '%b %d, %Y'```
+- Other possible date formats include: ```'%Y-%m-%d'```, ```'%m-%d-%Y'```, ```'%m/%d/%y'```, etc.
 
 ## DEMONSTRATION
 Inside vim, type ```:new example.html``` and a new window window will open with the first 2 lines filled with a header:
