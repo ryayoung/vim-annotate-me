@@ -15,7 +15,7 @@ Insert ```Plug 'ryayoung/vim-comments-and-headers'``` in the plugin section of y
 #### COMMENTS:
 1. Map a key that can be used in both normal and visual mode. I use ```<C-c>``` (control-c). Use it to call ToggleComment().
 - ```nnoremap<C-c> :call ToggleComment()<CR>```
-- ```vnoremap<C-c> :call ToggleComment()<CR>gv``` (Add "gv" to the end of the visual map so you stay in visual mode after execution)
+- ```vnoremap<C-c> :call ToggleComment()<CR>gv``` (Add "gv" to the end of any visual map to stay in visual mode after execution)
 ## CUSTOMIZE
 1. If you don't want headers to auto-generate at the top of new or empty files, add a line to your vimrc that sets ```let g:auto_smart_header = 0```.
 
