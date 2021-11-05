@@ -56,9 +56,9 @@ fun! CreateFirstHeader()
 endfun
 
 fun! CreateHeader()
-    let g:name = get(g:, 'name', '<Name goes here> (declare "g:name =" in vimrc)') "sets name variable if not already declared in vimrc
+    let g:my_name = get(g:, 'my_name', '<Name goes here> (declare "g:my_name =" in vimrc)') "sets name variable if not already declared in vimrc
     let l:save_cursor = getcurpos()
-    let title1 = "Maintainer:     " . g:name
+    let title1 = "Maintainer:     " . g:my_name
     let title2 = "Last Modified:  "
     let time = strftime("%m-%d-%y")
     let end = ""
