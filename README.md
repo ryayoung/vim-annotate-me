@@ -6,39 +6,57 @@
 3. As soon as you write/save a file that HAS been modified, the header (if one exists) will be updated with the current date.
 
 ## INSTALLATION
-Insert ```Plug 'ryayoung/vim-comments-and-headers'``` in the plugin section of your ```vimrc```, if you're using Plug as your plugin manager. Run ```:PlugInstall``` after saving and re-opening Vim. If you use a different plugin manager, figure it out.
+1. If using Plug as your plugin manager, paste into the plugin section of your ```vimrc```:
+```vim
+Plug 'ryayoung/vim-comments-and-headers'
+```
+2. Run ```:PlugInstall``` after saving and re-opening Vim.
 ## HOW TO USE
-If you just want to get this plugin working and don't feel like reading, paste the following into your ```vimrc``` file:
+- **Paste the following inside your ```vimrc```: (this will be used in headers)**
 ```vim
 let g:my_name = "Your Name"
-" Shortcut to create header in file that doesn't have one
-nnoremap <Leader>4 :call CreateHeader()<CR>
-" Toggle comment/uncomment current line
-nnoremap <C-c> :call ToggleComment()<CR>
-" Toggle comment/uncomment one or multiple selected lines
-vnoremap <C-c> :call ToggleComment()<CR>gv
 ```
-Otherwise, here's an explanation:
-#### Headers:
-1. First, declare your name in your vimrc: ```let g:my_name = "Your Name"```. This will be used in the headers.
-2. Create a normal mode map that calls CreateHeader(). Use this to add a header to an existing file that doesn't already have one.
-- ```nnoremap <Leader>4 :call CreateHeader()<CR>```
-#### Comments:
-1. Map a key that can be used in both normal and visual mode. I use ```<C-c>``` (control-c). Use it to call ToggleComment(). Create one mapping for normal mode, and one for visual mode:
-- ```nnoremap<C-c> :call ToggleComment()<CR>```
-- ```vnoremap<C-c> :call ToggleComment()<CR>gv``` (Add "gv" to the end of any visual map to stay in visual mode after execution)
-- NOTE: When you press your shortcut key, the plugin will detect whether the line is commented out, and add/remove the comment character(s) from the beginning of the line and the end of the line if necessary. If you're in visual mode and have multiple lines selected, this action will be repeated for each line INDIVIDUALLY, so comment syntax will be inserted for each line in your selection that's not yet commented out, and it will be removed for each line in your section that is already commented out.
+- **Commented Text:** Toggle using ```Ctrl-c``` in normal or visual mode, on one or multiple lines.
+- **Display Header:** Toggle using ```<Leader>z```. If you haven't set leader key yet, use ```\z```.
+## NOTES:
+#### Comments: 
+- When you press your shortcut key, the plugin will detect whether the line is commented out, and add/remove the comment character(s) from the beginning of the line and the end of the line if necessary.
+- If you're in visual mode and have multiple lines selected, this action will be repeated for each line INDIVIDUALLY, so comment syntax will be inserted for each line in your selection that's not yet commented out, and it will be removed for each line in your section that is already commented out.
+#### Headers: 
+- A header will be automatically inserted when you a.) create and give a name to a new file inside vim, or b.) open a completely empty file.
+- Header date will auto-update when you save/write to a file that *has been modified*.
+- When toggling the header on/off and auto-updating date, your cursor will maintain its relative position.
 ## CUSTOMIZE
-- If you don't want headers to auto-insert in new or empty files, add this line to your vimrc: 
-    - ```let g:auto_smart_header = 0```.
-- To change the string preceding your name in the header, declare in your vimrc: 
-    - ```let g:headerstr_name = "Maintainer:     "```
-- To change the string preceding the date in the header, declare in your vimrc:
-    - ```let g:headerstr_time = "Last Modified:  "```
-- To change the formatting of the date, declare in your vimrc:
-    - ```let g:time_fmt = '%b %d, %Y'```
-- Other possible date formats include:
-    - ```'%Y-%m-%d'```, ```'%m-%d-%Y'```, ```'%m/%d/%y'```, etc.
+#### If you don't want headers to auto-insert in new or empty files, add this line to your vimrc: 
+```vim
+let g:auto_header = 0
+```
+#### If you don't want the header date to auto-update when saving a modified file, paste in vimrc:
+```vim
+let g:auto_update_date = 0
+```
+#### To change the string preceding your name in the header, declare in your vimrc: 
+```vim
+let g:headerstr_name = "Maintainer:     "
+```
+#### To change the string preceding the date in the header, declare in your vimrc:
+```vim
+let g:headerstr_time = "Last Modified:  "
+```
+#### To change the formatting of the date, declare in your vimrc:
+```vim
+let g:time_fmt = '%b %d, %Y'
+```
+- Other date formats: ```'%Y-%m-%d'```, ```'%m-%d-%Y'```, ```'%m/%d/%y'```, etc.
+#### You can change the keyboard shortcuts for comments/headers in your vimrc:
+```vim
+" Comment in normal mode
+nnoremap <silent> <C-c> :call ToggleComment()<CR>
+" Comment in visual mode
+vnoremap <silent> <C-c> :call ToggleComment()<CR>gv
+" Toggle header in normal mode
+nnoremap <silent> <Leader>z :call ToggleHeader()<CR>
+```
 
 ## DEMONSTRATION
 Inside vim, type ```:new example.html``` and a new window window will open with the first 2 lines filled with a header:
