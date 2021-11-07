@@ -1,1 +1,4 @@
-annotate-me.txt Do cool things
+*annotate-me.txt* Do cool things
+|blue|
+{something}
+'something'
