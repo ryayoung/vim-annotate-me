@@ -1,6 +1,6 @@
 *annotate-me.txt* Comment and header functionality
 Author:   Ryan Young <yungryy@gmail.com>
-License:  MIT  (see |license|)
+License:  MIT (see |license|)
 
 
 Help Coming soon...
