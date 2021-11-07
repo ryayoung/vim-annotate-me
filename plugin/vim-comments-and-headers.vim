@@ -1,9 +1,14 @@
 " Maintainer:     Ryan Young
-" Last Modified:  Nov 06, 2021
+" Last Modified:  Nov 07, 2021
 
 " Vim-Comments-and-Headers Plugin.
 " See the README.md for an explanation of this stuff
 
+" Feature to add: Allow users to define a license in vimrc (default MIT) and
+" with a single keystroke insert the license in their file.
+" antoyo/vim-licenses is the kind of functionality I'm looking for.
+
+" USER INTERACTION:-----------------------------------------------------------
 " Declare maps, if not set already by user
 " 1. Comment Line in normal mode
 if !hasmapto('ToggleComment()', 'n')
@@ -18,150 +23,105 @@ if !hasmapto('ToggleHeader()', 'n')
     nnoremap <silent> <Leader>z :call ToggleHeader()<CR>
 endif
 
-" These 'get(g:' commands will set variables to a default unless they are already declared by user
-let g:my_name = get(g:, 'my_name', '<Name goes here> (declare "g:my_name =" in vimrc)')
-let g:headerstr_name = get(g:, 'headerstr_name', 'Maintainer:     ' . g:my_name)
+" GLOBAL VARIABLES:-----------------------------------------------------------
+" These 'get(g:' commands will set vars to a default if they aren't already
+" declared by user in their config
+let g:my_name = get(g:, 'my_name', '<Name> (declare "g:my_name =" in vimrc)')
+let g:headerstr_name=get(g:, 'headerstr_name', 'Maintainer:     ' . g:my_name)
 let g:headerstr_time = get(g:, 'headerstr_time', 'Last Modified:  ')
 let g:time_fmt = get(g:, 'time_fmt', '%b %d, %Y')
-let g:cur_time = strftime(g:time_fmt)
-let g:auto_header = get(g:, 'auto_header', '1')
-let g:auto_update_date = get(g:, 'auto_update_date', '1')
+let g:cur_time = strftime(g:time_fmt) " Current time in declared format
+let g:auto_header = get(g:, 'auto_header', '1') " Auto headers in new files?
+let g:auto_update_date = get(g:, 'auto_update_date', '1') " Update date when saving
+let g:comment = ['"',''] " This will be the array to store comment vars
+let g:comment_start = g:comment[0]
+let g:comment_end = g:comment[1]
 
-let g:comment_start = get(g:, 'comment_start', '')
-let g:comment_end = get(g:, 'comment_end', '')
-let g:comment_start_esc = get(g:, 'comment_start_esc', '')
-let g:comment_end_esc = get(g:, 'comment_end_esc', '')
 
-" SET COMMENT VARS (better explained in SetCommentVars())
-if has_key(g:comments, &filetype) == 1
-    let g:comment_start = g:comments[&filetype].start
-    let g:comment_end = g:comments[&filetype].end
-endif
+" ALTERNATE COMMENT SYNTAX:---------------------------------------------------
+" Here is the comment syntax for most languages: https://rosettacode.org/wiki/Comments#Go
 
-" other events to mess around with: au BufNewFile,BufRead,FocusGained,BufEnter,WinEnter,FileType,FileWritePre,BufWritePre,BufWritePost * call SetCommentVars(&filetype)
+" Vim has great syntax highlighting, so it usually knows if a line of code is
+" commented out. BUT it has terrible inconsistency in what gets stored in the
+" &commentstring option for each filetype, so we have to correct for that.
 
+" Here are the correct comment delimiters for filetypes where Vim provides
+" incorrect values, or values that we want to change. Please, if you find more
+" filetypes with incorrect comment delimiters provided 
+" by vim, let me know: <yungryy@gmail.com>
+let g:alternate_comments = {
+    \ 'vb':         {'start': "'",      'end': ''},
+    \ 'lss':        {'start': "'",      'end': ''},
+    \ 'sql':        {'start': '--',     'end': ''},
+    \ 'abap':       {'start': '"',      'end': ''},
+    \ 'st':         {'start': '"',      'end': '"'},
+    \ 'moo':        {'start': '"',      'end': '";'},
+    \ 'pascal':     {'start': '(*',     'end': '*)'},
+    \ 'xquery':     {'start': '(:',     'end': ':)'},
+    \ 'ps1xml':     {'start': '<!--',   'end': '-->'},
+    \ 'sas':        {'start': '/*',     'end': '*/'},
+    \ 'pli':        {'start': '/*',     'end': '*/'},
+    \ 'rexx':       {'start': '/*',     'end': '*/'},
+    \ 'inform':     {'start': '[',      'end': ']'},
+    \ 'lprolog':    {'start': '%',      'end': ''},
+    \ 'logtalk':    {'start': '%',      'end': ''},
+    \ 'postscr':    {'start': '%',      'end': ''},
+    \ 'expect':     {'start': '#',      'end': ''},
+    \ 'icon':       {'start': '#',      'end': ''},
+    \ 'maple':      {'start': '#',      'end': ''},
+    \ 'cpp':        {'start': '//',     'end': ''},
+    \ 'php':        {'start': '//',     'end': ''},
+    \ 'vhdl':       {'start': '--',     'end': ''},
+    \ 'sather':     {'start': '--',     'end': ''},
+    \ 'clojure':    {'start': ';;',     'end': ''},
+    \ 'simula':     {'start': 'COMMENT','end': ''},
+    \ 'tpp':        {'start': '--##',   'end': ''},
+    \ 'text':       {'start': '',       'end': ''},
+    \ 'help':       {'start': '',       'end': ''},
+    \ 'custom':     {'start': '',       'end': ''},
+    \ '':           {'start': '',       'end': ''}
+    \ }
+
+
+" AUTO COMMANDS:--------------------------------------------------------------
 " Every time we enter a buffer, set the global comment strings based on its
 " filetype, and see if we need to auto-generate a header
-au BufEnter * call SetCommentVars(&filetype) | call CreateFirstHeader()
-fun! SetCommentVars(filetype)
-    " If this filetype exists in our dictionary of comment strings, then set
-    " the comment string variables
-    if has_key(g:comments, a:filetype) == 1
-        let g:comment_start = g:comments[a:filetype].start
-        let g:comment_end = g:comments[a:filetype].end
-        call SetCommentVarsEscaped()
+au BufEnter * call SetCommentVars() | call CreateFirstHeader()
 
-    " We haven't defined syntax for this filetype, so just set the variables
-    " empty, and give the user a descriptive warning.
-    else
-        let g:comment_start = ''
-        let g:comment_end = ''
-        let g:comment_start_esc = ''
-        let g:comment_end_esc = ''
-        echom "NOTICE: Comment string unknown for " . &filetype " files. Go to /comment-string-data.vim"
+" Try to update the date each time we save a file
+au BufWritePre,FileWritePre * call UpdateHeaderDate()
+
+" COMMENTS:-------------------------------------------------------------------
+
+" Set our global comment strings
+fun! SetCommentVars()
+    " This function is designed so that the g:comment array will ALWAYS be of
+    " length 2, even if there is no comment syntax for the current language,
+    " or if splitting Vim's commentstring returns more than 2 values
+    let g:comment = ['','']
+    " If this filetype exists in our dictionary of alternate comment strings,
+    " set our comment to the matching values
+    if has_key(g:alternate_comments, &filetype) == 1
+        let g:comment[0] = g:alternate_comments[&filetype].start
+        let g:comment[1] = g:alternate_comments[&filetype].end
+
+    " Else, use Vim's commentstring
+    elseif !has_key(g:alternate_comments, &filetype) == 1
+        let l:commentstring = split(&commentstring, "%s")
+        " If commentstring has more than 2 values, just choose the first 2
+        if len(l:commentstring) > 0
+            let g:comment[0] = trim(l:commentstring[0], " ", 0)
+        endif
+        if len(l:commentstring) > 1
+            let g:comment[1] = trim(l:commentstring[1], " ", 0)
+        endif
     endif
+
+    let g:comment_start = g:comment[0]
+    let g:comment_end = g:comment[1]
+
 endfun
 
-fun! SetCommentVarsEscaped()
-    " Create an escaped version of start comment and end comment. These will
-    " be used in the grep command to update date header. (Yes, I know this is
-    " a stupid way to do this. This will be fixed soon.)
-    let l:com_start_split = split(g:comment_start, '\zs')
-    let l:com_end_split = split(g:comment_end, '\zs')
-
-    for i in range(0, len(l:com_start_split)-1)
-        if l:com_start_split[i] == "/"
-            let l:com_start_split[i] = '\' . l:com_start_split[i]
-        endif
-    endfor
-    for i in range(0, len(l:com_end_split)-1)
-        if l:com_end_split[i] == "/"
-            let l:com_end_split[i] = '\' . l:com_end_split[i]
-        endif
-    endfor
-
-    let g:comment_start_esc = join(l:com_start_split, "")
-    let g:comment_end_esc = join(l:com_end_split, "")
-endfun
-call SetCommentVarsEscaped()
-
-fun! CreateFirstHeader()
-    if g:auto_header == 0
-        " User has disabled this feature
-        return
-    " If the filetype is known, AND the file is empty, AND it's not a CSV:
-    elseif line("$") == 1 && match(getline('.'), "^\\s*$") == 0 && &filetype != "" && &filetype != "csv"
-        call ToggleHeader()
-        exe "normal! jo"
-    endif
-endfun
-
-fun! ToggleHeader()
-    let l:save_cursor = getcurpos()
-    " If we're commenting out the header (i.e. it's not a txt file), surround
-    " the header with spaces. Otherwise, don't use spaces.
-    let l:end = ""
-    if g:comment_end != ""
-        let l:end = " " . g:comment_end
-    endif
-    let l:space = " "
-    if g:comment_start == ""
-        let l:space = ""
-    endif
-    " Only replace lines if we're ABSOLUTELY SURE they are headers
-    if search(g:comment_start . l:space . g:headerstr_name, "w") == 1
-                \ && search(g:comment_start . l:space . g:headerstr_time, "w") == 2
-        call setpos('.',[0,1,1,0])
-        exe "normal! dj"
-        " To maintain RELATIVE cursor position, place the cursor 2 lines
-        " higher than its original position
-        call setpos('.', [l:save_cursor[0],l:save_cursor[1]-2,l:save_cursor[2],l:save_cursor[3]])
-
-    " No header found with 100% certainty, so add a new one just to be safe
-    else
-        call setpos('.',[0,1,1,0])
-        exe "normal! O"
-        exe "normal! O"
-        call setline(1, g:comment_start . l:space . g:headerstr_name . l:end)
-        call setline(2, g:comment_start . l:space . g:headerstr_time . g:cur_time . l:end)
-        " To maintain RELATIVE cursor position, place the cursor 2 lines lower
-        " than its original position
-        call setpos('.', [l:save_cursor[0],l:save_cursor[1]+2,l:save_cursor[2],l:save_cursor[3]])
-    endif
-endfun
-
-autocmd BufWritePre,FileWritePre * call UpdateLastModified()
-fun! UpdateLastModified()
-    if g:auto_update_date == 0 
-        " User has disabled this feature
-        return
-    elseif &modified == 0 
-        " Don't update if the file is unchanged
-        return
-    else
-        let save_cursor = getcurpos()
-        " End of the line will be empty unless an end comment is required
-        let end = ""
-        if g:comment_end_esc != ""
-            let end = " " . g:comment_end_esc
-        endif
-        " Put space before the content ONLY if a comment is required
-        let l:space = " "
-        if g:comment_start == ""
-            let l:space = ""
-        endif
-        " Find the line where the date is
-        let line = search(g:comment_start . l:space . g:headerstr_time, "w")
-        " Only execute if a date header was found
-        if line != 0 
-            " Fully replace the entire line with new content
-            exe line . "g/" . g:headerstr_time . "/s/.*/" . g:comment_start_esc . l:space . g:headerstr_time . g:cur_time . end
-        endif
-
-        call setpos('.', save_cursor)
-    endif
-endfun
- 
 fun! ToggleComment()
     " If the current language uses comments (i.e. it's NOT a txt file)
     if len(g:comment_start) > 0 
@@ -190,7 +150,7 @@ fun! InsertComment(line, indent)
         let l:end = " " . g:comment_end
     endif
     " Set the line to its original value, wrapped in comment syntax.
-    call setline('.', a:indent . g:comment_start_esc . " " . a:line . l:end)
+    call setline('.', a:indent . g:comment_start . " " . a:line . l:end)
 endfun
 
 fun! RemoveComment(space_between, line, indent)
@@ -230,6 +190,115 @@ fun! GetWhitespace(string, type)
         return ""
     endif
 endfun
+
+" HEADERS:--------------------------------------------------------------------
+
+fun! CreateFirstHeader()
+    if g:auto_header == 0
+        " User has disabled this feature
+        return
+    " If there is only a single line in the file, AND that line is empty,
+    " AND the filetype is known, AND the file is not type CSV
+    elseif line("$") == 1 && match(getline('.'), "^\\s*$") == 0 
+                \ && &filetype != "" && &filetype != "csv"
+        call ToggleHeader()
+        exe "normal! jo"
+        if &filetype == "php"
+            exe "normal! ggO"
+            call setline('.', "<?php")
+            exe "normal! Go"
+            call setline('.', "?>")
+        endif
+    endif
+endfun
+
+fun! ToggleHeader()
+    " Save cursor position
+    let l:cursor = getcurpos()
+    " If we're commenting out the header (i.e. it's not a txt file), surround
+    " the header with spaces. Otherwise, don't use spaces.
+    let l:end = ""
+    if g:comment_end != ""
+        let l:end = " " . g:comment_end
+    endif
+    let l:space = " "
+    if g:comment_start == ""
+        let l:space = ""
+    endif
+    " Only replace lines if we're ABSOLUTELY SURE they are headers
+    let l:name_line = search(g:comment_start . l:space . g:headerstr_name, "w")
+    let l:date_line = search(g:comment_start . l:space . g:headerstr_time, "w")
+    " Name can be on line 1 or 2, date can be on 2 or 3. This is because some
+    " languages such as PHP require an opening tag on the first line
+    if (l:name_line == 1 || l:name_line == 2) && (l:date_line == 2 || l:date_line == 3)
+        call setpos('.',[0,l:name_line,1,0])
+        exe "normal! dj"
+        " To maintain RELATIVE cursor position, place the cursor 2 lines
+        " higher than its original position
+        call setpos('.', [l:cursor[0],l:cursor[1]-2,l:cursor[2],l:cursor[3]])
+
+    " No header found with 100% certainty, so add a new one just to be safe
+    else
+        " At which line will we place the file?
+        let l:hdr_location = 1
+        " Some languages require code to be wrapped in tags, so the first line
+        " of a php file, for example, should be '<?php'
+        if &filetype == 'php'
+            let l:hdr_location = 2
+        endif
+        call setpos('.',[0,l:hdr_location,1,0])
+        exe "normal! O"
+        exe "normal! O"
+        call setline(l:hdr_location, g:comment_start . l:space . g:headerstr_name . l:end)
+        call setline(l:hdr_location+1, g:comment_start . l:space . g:headerstr_time . g:cur_time . l:end)
+        " To maintain RELATIVE cursor position, place the cursor 2 lines lower
+        " than its original position
+        call setpos('.', [l:cursor[0],l:cursor[1]+2,l:cursor[2],l:cursor[3]])
+    endif
+endfun
+
+" Feature to add soon: Currently, if we try to update a date and can't
+" find one, we do nothing. However, what if the user changes their string for
+" the date title, and changes the format for the date in their vimrc. Then,
+" the date line will look totally different from what we're trying to find, so
+" we end up not updating it. Here's a strategy: The one thing that WILL remain
+" constant is the user's name. So, if we can't find a date line, look for the
+" user's name in the first line. If found, then add a new line with the
+" updated date, and let the user delete the old date line on their own.
+fun! UpdateHeaderDate()
+    if g:auto_update_date == 0 
+        " User has disabled this feature
+        return
+    elseif &modified == 0 
+        " Don't update if the file is unchanged
+        return
+    else
+        let save_cursor = getcurpos()
+        " End of the line will be empty unless an end comment is required
+        let end = ""
+        if g:comment_end != ""
+            let end = " " . g:comment_end
+        endif
+        " Put space before the content ONLY if a comment is required
+        let l:space = " "
+        if g:comment_start == ""
+            let l:space = ""
+        endif
+        " Find the line where the date is
+        let l:line_num = search(g:comment_start . l:space . g:headerstr_time, "w")
+        " Only execute if a date header was found
+        if l:line_num != 0 && l:line_num < 10
+            " Fully replace the entire line with new content
+            call setline(l:line_num, g:comment_start . l:space
+                        \ . g:headerstr_time . g:cur_time . end )
+        endif
+
+        " Return cursor to it's absolute (not relative) position
+        call setpos('.', save_cursor)
+    endif
+endfun
+
+
 
 
 
