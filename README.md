@@ -1,11 +1,12 @@
 # vim-comments-and-headers
 
 ### This plugin does the following:
-1. Lets you **toggle** comment/uncomment one or multiple lines at a time. It recognizes your filetype and will comment/uncomment according to that syntax. This is especially useful in languages such as HTML, where commented code must be fully enclosed, AND the syntax is annoying to type by hand. (Ex: ```<!-- some html stuff -->```).
-2. Automatically creates headers (name & today's date) at the top of any new document you create, or any empty document that you open, and comments out that header using correct syntax based on your filetype.
-3. Lets you toggle the current file's header on/off with a single keypress, without disrupting your code, and without moving your cursor from its relative position.
-4. As soon as you write/save a file that HAS been modified, the header (if one exists) will be updated with the current date.
-5. The header format is fully customizeable, including the format of the current date. If you change the date format in your vimrc, the old dates in your previous files will automatically update with the new format once you save/write to them again.
+1. Lets you **toggle** comment/uncomment one or multiple lines of code at a time with a single keypress.
+2. Recognizes your filetype and will comment/uncomment according to that syntax. Especially useful in languages such as HTML, where commented code must be fully enclosed, AND the syntax is annoying to type by hand. (Ex: ```<!-- some html stuff -->```).
+3. Automatically creates headers (name & today's date) at the top of any new document you create, or any empty document that you open, and comments out that header using correct syntax based on your filetype.
+4. Lets you toggle the current file's header on/off with a single keypress, without disrupting your code, and without moving your cursor from its relative position.
+5. As soon as you write/save a file that HAS been modified, the header (if one exists) will be updated with the current date.
+6. The header format is fully customizeable, including the format of the current date. If you change the date format in your vimrc, the old dates in your previous files will automatically update with the new format once you save/write to them again.
 
 ## INSTALLATION
 1. If using Plug as your plugin manager, paste into the plugin section of your ```vimrc```:
