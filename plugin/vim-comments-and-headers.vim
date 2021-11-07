@@ -307,11 +307,11 @@ fun! SpecialFileSetup()
         call setline('.', "?>")
     endif
     if &filetype == 'html' && g:auto_html_setup == 1
-        call InsertHtmlHeader()
+        call InsertHtmlTemplate()
     endif
 endfun
 
-fun! InsertHtmlHeader()
+fun! InsertHtmlTemplate()
     exe "normal! G"
     let l:line = line('.')
     call setline(l:line+1, "<!DOCTYPE html>")
@@ -326,3 +326,4 @@ fun! InsertHtmlHeader()
     call setline(l:line+10, "  </body>")
     call setline(l:line+11, "</html>")
 endfun
+
