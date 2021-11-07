@@ -3,8 +3,7 @@ Author:   Ryan Young <yungryy@gmail.com>
 License:  MIT  (see |license|)
 
 
-'Help coming soon...'
-'comment strin'
+*Coming soon...*
 
 
 vim:tw=78:ts=8:et:ft=help:norl:
