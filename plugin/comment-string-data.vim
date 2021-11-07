@@ -1,5 +1,5 @@
 " Maintainer:     Ryan Young
-" Last Modified:  Nov 4, 2021
+" Last Modified:  Nov 04, 2021
 
 " Here is the comment syntax for most languages: https://rosettacode.org/wiki/Comments#Go
 " Add more to this list if you're using a language not listed here
