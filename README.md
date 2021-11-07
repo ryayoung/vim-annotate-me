@@ -1,4 +1,4 @@
-# vim-comments-and-headers
+# vim-annotate
 
 ### This plugin does the following:
 1. Lets you **toggle** comment/uncomment one or multiple lines of code at a time with a single keypress.
@@ -11,7 +11,7 @@
 ## INSTALLATION
 1. If using Plug as your plugin manager, paste into the plugin section of your ```vimrc```:
 ```vim
-Plug 'ryayoung/vim-comments-and-headers'
+Plug 'ryayoung/vim-annotate'
 ```
 2. Run ```:PlugInstall``` after saving and re-opening Vim.
 ## HOW TO USE
