@@ -72,6 +72,7 @@ Or type ```:new example.py``` and a new window will open and be filled with the 
 # Maintainer:     Ryan Young
 # Last Modified:  11-05-21
 ```
-
+## ISSUES
+- Languages which require indentations in front of comments, such as COBOL, are not fully supported: You'll still have the same functionality, but the required indents will NOT be inserted for you.
 
 
