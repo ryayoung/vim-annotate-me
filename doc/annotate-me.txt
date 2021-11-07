@@ -4,7 +4,7 @@ License:  MIT  (see |license|)
 
 
 'Help coming soon...'
-'commentstring'
+'commentstrin'
 
 
 vim:tw=78:ts=8:et:ft=help:norl:
