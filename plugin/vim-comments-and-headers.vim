@@ -31,12 +31,15 @@ let g:headerstr_name=get(g:, 'headerstr_name', 'Maintainer:     ' . g:my_name)
 let g:headerstr_time = get(g:, 'headerstr_time', 'Last Modified:  ')
 let g:time_fmt = get(g:, 'time_fmt', '%b %d, %Y')
 let g:cur_time = strftime(g:time_fmt) " Current time in declared format
-let g:auto_header = get(g:, 'auto_header', '1') " Auto headers in new files?
-let g:auto_update_date = get(g:, 'auto_update_date', '1') " Update date when saving
 let g:comment = ['"',''] " This will be the array to store comment vars
 let g:comment_start = g:comment[0]
 let g:comment_end = g:comment[1]
 
+" Every action the plugin does automatically can be disabled by the user with:
+let g:auto_header = get(g:, 'auto_header', '1') " Auto headers in new files?
+let g:auto_update_date = get(g:, 'auto_update_date', '1') " Update date when saving
+let g:auto_html_setup = get(g:, 'auto_html_setup', '1')
+let g:auto_php_setup = get(g:, 'auto_php_setup', '1')
 
 " ALTERNATE COMMENT SYNTAX:---------------------------------------------------
 " Here is the comment syntax for most languages: https://rosettacode.org/wiki/Comments#Go
@@ -202,13 +205,8 @@ fun! CreateFirstHeader()
     elseif line("$") == 1 && match(getline('.'), "^\\s*$") == 0 
                 \ && &filetype != "" && &filetype != "csv"
         call ToggleHeader()
-        exe "normal! jo"
-        if &filetype == "php"
-            exe "normal! ggO"
-            call setline('.', "<?php")
-            exe "normal! Go"
-            call setline('.', "?>")
-        endif
+        exe "normal! j"
+        call SpecialFileSetup()
     endif
 endfun
 
@@ -243,7 +241,7 @@ fun! ToggleHeader()
         let l:hdr_location = 1
         " Some languages require code to be wrapped in tags, so the first line
         " of a php file, for example, should be '<?php'
-        if &filetype == 'php'
+        if &filetype == 'php' && getline(1) == "<?php"
             let l:hdr_location = 2
         endif
         call setpos('.',[0,l:hdr_location,1,0])
@@ -298,8 +296,33 @@ fun! UpdateHeaderDate()
     endif
 endfun
 
+" EXTRA FILE CUSTOMIZATION:---------------------------------------------------
+" For some filetypes, such as PHP or HTML, it's nice to have some extra setup
 
+fun! SpecialFileSetup()
+    if &filetype == "php" && g:auto_php_setup == 1
+        exe "normal! ggO"
+        call setline('.', "<?php")
+        exe "normal! Go"
+        call setline('.', "?>")
+    endif
+    if &filetype == 'html' && g:auto_html_setup == 1
+        call InsertHtmlHeader()
+    endif
+endfun
 
-
-
-
+fun! InsertHtmlHeader()
+    exe "normal! G"
+    let l:line = line('.')
+    call setline(l:line+1, "<!DOCTYPE html>")
+    call setline(l:line+2, '<html lang="en-US">')
+    call setline(l:line+3, "  <head>")
+    call setline(l:line+4, '    <link rel="stylesheet" href="">')
+    call setline(l:line+5, '    <script src=""></script>')
+    call setline(l:line+6, '    <meta charset="utf-8">')
+    call setline(l:line+7, "  </head>")
+    call setline(l:line+8, "  <body>")
+    call setline(l:line+9, "    ")
+    call setline(l:line+10, "  </body>")
+    call setline(l:line+11, "</html>")
+endfun
