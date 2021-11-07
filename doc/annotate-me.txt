@@ -2,3 +2,6 @@
 |blue|
 {something}
 'something'
+
+
+ vim:tw=78:et:ft=help:norl:
