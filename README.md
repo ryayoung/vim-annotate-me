@@ -1,7 +1,7 @@
 # vim-annotate-me
 Vim plugin
 
-1. **toggle** comment/uncomment one or multiple lines of code at a time by pressing ```T```.
+1. **Toggle** comment/uncomment one or multiple lines of code at a time by pressing ```T```.
 2. Recognizes your filetype and will comment/uncomment according to that syntax. Added support for most languages that Vim doesn't. Works for languages with double-ended comment strings. (Ex: ```<!-- some html stuff -->```).
 3. Automatically creates headers (name & today's date) at the top of any new document you create, or any empty document that you open, with proper comment syntax based on your filetype.
 4. Lets you toggle the current file's header on/off with a single keypress, without disrupting your code, and without moving your cursor from its relative position.
@@ -15,12 +15,12 @@ Plug 'ryayoung/vim-annotate-me'
 ```
 2. Run ```:PlugInstall``` after saving and re-opening Vim.
 ## HOW TO USE
-- **Paste the following inside your ```vimrc```: (this will be used in headers)**
+- **Declare your name in ```vimrc```: (this will be used in headers)**
 ```vim
 let g:my_name = "Your Name"
 ```
-- **Commented Text:** Toggle using ```Ctrl-c``` in normal or visual mode, on one or multiple lines.
-- **Display Header:** Toggle using ```<Leader>z```. If you haven't set leader key yet, use ```\z```.
+- **Commented Text:** Toggle using ```T``` in normal or visual mode, on one or multiple lines.
+- **Display Header:** Toggle using ```<Leader>T```. If you haven't set leader key yet, use ```\T```.
 ## NOTES:
 #### Comments: 
 - When you press your shortcut key, the plugin will detect whether the line is commented out, and add/remove the comment character(s) from the beginning of the line and the end of the line if necessary.
@@ -51,7 +51,7 @@ let g:headerstr_time = "Last Modified:  "
 let g:time_fmt = '%b %d, %Y'
 ```
 - Other date formats: ```'%Y-%m-%d'```, ```'%m-%d-%Y'```, ```'%m/%d/%y'```, etc.
-#### You can change the keyboard shortcuts for comments/headers in your vimrc:
+#### Don't want to give up Vim's built-in ```T``` function? Paste the following into ```vimrc``` to use ```<C-C>``` (Ctrl-c) instead.
 ```vim
 " Comment in normal mode
 nnoremap <silent> <C-c> :call ToggleComment()<CR>
