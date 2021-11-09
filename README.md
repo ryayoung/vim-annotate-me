@@ -1,8 +1,8 @@
 # vim-annotate-me
+Vim plugin
 
-### This plugin does the following:
-1. Lets you **toggle** comment/uncomment one or multiple lines of code at a time with a single keypress.
-2. Recognizes your filetype and will comment/uncomment according to that syntax. Especially useful in languages such as HTML, where commented code must be fully enclosed, AND the syntax is annoying to type by hand. (Ex: ```<!-- some html stuff -->```).
+1. **toggle** comment/uncomment one or multiple lines of code at a time by pressing ```T```.
+2. Recognizes your filetype and will comment/uncomment according to that syntax. Added support for most languages that Vim doesn't. Works for languages with double-ended comment strings. (Ex: ```<!-- some html stuff -->```).
 3. Automatically creates headers (name & today's date) at the top of any new document you create, or any empty document that you open, with proper comment syntax based on your filetype.
 4. Lets you toggle the current file's header on/off with a single keypress, without disrupting your code, and without moving your cursor from its relative position.
 5. As soon as you write/save a file that HAS been modified, the header (if one exists) will be updated with the current date.
@@ -62,15 +62,34 @@ nnoremap <silent> <Leader>z :call ToggleHeader()<CR>
 ```
 
 ## DEMONSTRATION
-Inside vim, type ```:new example.html``` and a new window window will open with the first 2 lines filled with a header:
-```html
-<!-- Maintainer:     Ryan Young -->
-<!-- Last Modified:  11-05-21 -->
-```
-Or type ```:new example.py``` and a new window will open and be filled with the following:
+Here is what a newly created file will look like in a few different languages:
+1. Python: ```:new example.py```
 ```python
 # Maintainer:     Ryan Young
-# Last Modified:  11-05-21
+# Last Modified:  Nov 09, 2021
+```
+2. PHP: ```:new example.php```
+```php
+<?php
+// Maintainer:     Ryan Young
+// Last Modified:  Nov 09, 2021
+?>
+```
+3. HTML: ```:new example.html```
+```html
+<!-- Maintainer:     Ryan Young -->
+<!-- Last Modified:  Nov 09, 2021 -->
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <link rel="stylesheet" href="">
+    <script src="" async></script>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    
+  </body>
+</html>
 ```
 ## ISSUES
 - Languages which require indentations in front of comments, such as COBOL, are not fully supported: You'll still have the same functionality, but the required indents will NOT be inserted for you.
